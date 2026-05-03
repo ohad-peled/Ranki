@@ -107,8 +107,6 @@ def admin_scholar_results(x_admin_key: str = Header(...)):
     return {'count': len(data), 'results': data}
 
 
-app.mount('/', StaticFiles(directory=STATIC_DIR, html=True), name='static')
-
 @app.post('/api/visit')
 def record_visit():
     """Increment the site visit counter. Called by the frontend on page load."""
@@ -123,3 +121,5 @@ def admin_visit_count(x_admin_key: str = Header(...)):
         raise HTTPException(status_code=403, detail='Invalid admin key')
     return {'visit_count': get_visit_count()}
 
+
+app.mount('/', StaticFiles(directory=STATIC_DIR, html=True), name='static')
