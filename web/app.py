@@ -9,7 +9,7 @@ from fastapi.staticfiles import StaticFiles
 
 from core.helpers import load_scimago_data_by_issn
 from web.api.routes import router
-from web.db import init_db, load_all_scholar_results, count_scholar_results
+from web.db import init_db, load_all_scholar_results, count_scholar_results, increment_visit_count, get_visit_count
 from web.utils import make_author_id
 
 RESULTS_JSON_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'phd_isr_res_filtered.json')
@@ -108,3 +108,18 @@ def admin_scholar_results(x_admin_key: str = Header(...)):
 
 
 app.mount('/', StaticFiles(directory=STATIC_DIR, html=True), name='static')
+
+@app.post('/api/visit')
+def record_visit():
+    """Increment the site visit counter. Called by the frontend on page load."""
+    increment_visit_count()
+    return {'ok': True}
+
+@app.get('/api/admin/visit-count')
+def admin_visit_count(x_admin_key: str = Header(...)):
+    """Return the current visit count. Protected by ADMIN_KEY."""
+    admin_key = os.environ.get('ADMIN_KEY', '')
+    if not admin_key or x_admin_key != admin_key:
+        raise HTTPException(status_code=403, detail='Invalid admin key')
+    return {'visit_count': get_visit_count()}
+
