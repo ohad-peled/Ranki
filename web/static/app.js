@@ -472,6 +472,10 @@ function runScholarScrape(scholar_id) {
       ? '<span class="paper-card-first-author">1st author</span>'
       : '';
 
+    var last_author_badge = paper.is_last_author
+      ? '<span class="paper-card-first-author">last author</span>'
+      : '';
+
     var year   = paper.year   != null ? String(paper.year)   : '—';
     var cites  = paper.citations != null ? String(paper.citations) : '0';
 
@@ -483,6 +487,7 @@ function runScholarScrape(scholar_id) {
         '<div class="paper-card-meta">' +
           '<span class="paper-card-year">' + escapeHtml(year) + '</span>' +
           first_author_badge +
+          last_author_badge +
         '</div>' +
       '</div>';
 
