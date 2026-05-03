@@ -3,8 +3,8 @@
 Author-level research impact scoring. Search by name, see where you rank among your peers.
 
 ## Why Ranki?
-Academic impact is hard to measure fairly. Counting citations rewards popularity but ignores where those citations come from. Counting papers rewards prolixity. Ranki tries to balance both—penalizing venue shopping while acknowledging that research matures over time. 
-You provide a name—the system enriches it with metadata, cross-references journal rankings, and tells you how you compare within your field. The underlying assumption is simple: impact builds over time. A paper in a top-tier journal with 100 citations matters more than 10 papers in low-impact venues. But a researcher with 5 papers should not be compared directly to one with 50. We normalize by career years to level the playing field.
+Academic impact is hard to measure fairly. Counting citations rewards popularity but ignores where those citations come from. Counting papers rewards prolixity. Ranki tries to balance both by penalizing venue shopping while acknowledging that research matures over time. 
+You provide a name and the the system enriches it with metadata, cross-references journal rankings, and tells you how you compare within your field. The underlying assumption is simple: impact builds over time. A paper in a top-tier journal with 100 citations matters more than 10 papers in low-impact venues. But a researcher with 5 papers should not be compared directly to one with 50. We normalize by career years to level the playing field.
 
 ## How is Ranki computed?
 The ranking combines publication quality, citation impact, and career productivity into a single normalized score.
