@@ -142,7 +142,7 @@ def score_author(author_entry, scimago_sjr_by_issn, scimago_fields_by_issn, curr
 	}
 
 
-def run_pipeline(input_json_path, output_json_path, scimago_file_path, infer_start_year=False):
+def run_pipeline(input_json_path, output_json_path, scimago_file_path, infer_start_year=True):
 	'Run the Crossref and SCImago pipeline for all authors in the input file.'
 	scimago_sjr_by_issn, scimago_fields_by_issn = load_scimago_data_by_issn(scimago_file_path)
 	author_list = load_author_list(input_json_path)
