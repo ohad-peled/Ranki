@@ -17,6 +17,11 @@ def search_scholar_profiles(author_name, serpapi_key):
     return search_scholar_by_name(serpapi_key, author_name)
 
 
+def sum_paper_citations(papers):
+	'''Return the total citation count across a list of paper dicts.'''
+	return sum((paper.get('citations') or 0) for paper in papers)
+
+
 def search_authors(query, index):
     """Return authors whose name contains the query string (case-insensitive)."""
     query_lower = query.lower()
@@ -29,6 +34,7 @@ def search_authors(query, index):
                 'institution': entry.get('institution', ''),
                 'author_score': entry.get('author_score', 0),
                 'total_papers': entry.get('total_papers', 0),
+                'total_citations': sum_paper_citations(entry.get('papers', [])),
                 'fields': entry.get('fields', []),
             })
     return matches
@@ -54,7 +60,7 @@ def scrape_and_score_scholar_author(
         return None
     author_id = make_author_id(author_name, institution)
     if author_id in index:
-        return {'author_id': author_id, **index[author_id]}
+        return {'author_id': author_id, 'total_citations': sum_paper_citations(index[author_id].get('papers', [])), **index[author_id]}
     entry = score_author_from_scholar(
         author_name,
         institution,
@@ -68,7 +74,7 @@ def scrape_and_score_scholar_author(
     index[author_id] = entry
     # Persist to database
     upsert_scholar_result(author_id, author_name, institution, entry)
-    return {'author_id': author_id, **entry}
+    return {'author_id': author_id, 'total_citations': sum_paper_citations(entry.get('papers', [])), **entry}
 
 
 def generate_plot(
