@@ -15,8 +15,6 @@ CREATE TABLE IF NOT EXISTS scholar_results (
     created_at  TIMESTAMP DEFAULT NOW(),
     updated_at  TIMESTAMP DEFAULT NOW()
 );
-"""
-
 CREATE TABLE IF NOT EXISTS site_visits (
     id          INTEGER PRIMARY KEY DEFAULT 1,
     visit_count INTEGER NOT NULL DEFAULT 0,
@@ -26,6 +24,7 @@ CREATE TABLE IF NOT EXISTS site_visits (
 INSERT INTO site_visits (id, visit_count)
 VALUES (1, 0)
 ON CONFLICT (id) DO NOTHING;
+"""
 
 _db_available = False
 
