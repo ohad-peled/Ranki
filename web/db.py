@@ -17,6 +17,16 @@ CREATE TABLE IF NOT EXISTS scholar_results (
 );
 """
 
+CREATE TABLE IF NOT EXISTS site_visits (
+    id          INTEGER PRIMARY KEY DEFAULT 1,
+    visit_count INTEGER NOT NULL DEFAULT 0,
+    updated_at  TIMESTAMP DEFAULT NOW(),
+    CHECK (id = 1)
+);
+INSERT INTO site_visits (id, visit_count)
+VALUES (1, 0)
+ON CONFLICT (id) DO NOTHING;
+
 _db_available = False
 
 
@@ -138,3 +148,29 @@ def count_scholar_results():
         with conn.cursor() as cur:
             cur.execute('SELECT COUNT(*) FROM scholar_results')
             return cur.fetchone()[0]
+
+
+def increment_visit_count():
+    """Atomically increment the site visit counter. No-op if DB not available."""
+    if not _db_available:
+        return None
+    try:
+        with get_db() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    'UPDATE site_visits SET visit_count = visit_count + 1, updated_at = NOW() WHERE id = 1'
+                )
+    except Exception:
+        pass  # non-critical — don't break the page over analytics
+
+
+def get_visit_count():
+    """Return the current visit count, or None if DB not available."""
+    if not _db_available:
+        return None
+    with get_db() as conn:
+        with conn.cursor() as cur:
+            cur.execute('SELECT visit_count FROM site_visits WHERE id = 1')
+            row = cur.fetchone()
+            return row[0] if row else 0
+
