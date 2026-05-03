@@ -393,15 +393,15 @@ function runScholarScrape(scholar_id) {
 
 
   function renderAuthorCard(author) {
-    var score_rounded = (author.author_score || 0).toFixed(2);
+    var total_citations = author.total_citations || 0;
 
     authorInfo.innerHTML =
       '<h2>' + escapeHtml(author.name) + '</h2>' +
       '<div class="institution">' + escapeHtml(author.institution || '—') + '</div>' +
       '<div class="stats-row">' +
         '<div class="stat-item">' +
-          '<span class="stat-label">Author Score</span>' +
-          '<span class="stat-value">' + escapeHtml(score_rounded) + '</span>' +
+          '<span class="stat-label">Total Citations</span>' +
+          '<span class="stat-value">' + escapeHtml(total_citations) + '</span>' +
         '</div>' +
         '<div class="stat-item">' +
           '<span class="stat-label">Total Papers</span>' +
