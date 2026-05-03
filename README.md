@@ -34,7 +34,7 @@ author_score = sum(paper_scores) / active_years
 
 To be found on Ranki, you need a **Google Scholar profile**. Without one, the system cannot locate your publication record.
 
-## Qestions? Suggestions? Bugs?
+## Questions, suggestions, bugs?
 
 For more details, feel free to reach out at [ohad.peled@mail.huji.ac.il](mailto:ohad.peled@mail.huji.ac.il) or on [LinkedIn](https://www.linkedin.com/in/ohad-peled-a99181176/)
 
