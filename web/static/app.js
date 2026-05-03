@@ -15,6 +15,8 @@
       console.warn('[Peled Index] Could not load startup info:', err);
     });
 
+	fetch('/api/visit', { method: 'POST' }).catch(function () {});
+
   const searchInput    = document.getElementById('search-input');
   const dropdown       = document.getElementById('dropdown');
   const dropdownStatus = document.getElementById('dropdown-status');
