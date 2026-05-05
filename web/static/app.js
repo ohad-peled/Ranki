@@ -100,7 +100,7 @@ function renderScholarPrompt() {
 		'</div>' +
 		'<div id="scholar-id-section" style="display:none;margin-top:0.5rem;">' +
 			'<div style="display:flex;gap:0.5rem;">' +
-				'<input id="scholar-id-input" type="text" placeholder="e.g. nFTM_YIAAAAJ"' +
+				'<input id="scholar-id-input" type="text" placeholder="e.g. e.g. 2w2RgPkAAAAJ (id is listed in the URL on your scholar profile as user=id"' +
 					' style="flex:1;padding:0.5rem 0.7rem;background:#0f172a;border:1px solid #334155;' +
 					'border-radius:6px;color:#ffffff;font-size:0.9rem;outline:none;" />' +
 				'<button id="scholar-scrape-btn"' +
@@ -409,10 +409,10 @@ function runScholarScrape(scholar_id) {
         '</div>' +
       '</div>' +
       '<div class="card-not-you-section">' +
-        '<span class="card-not-you-toggle">Not you?</span>' +
+        '<span class="card-not-you-toggle">Not you? use your scholar id instead</span>' +
         '<div id="author-scholar-id-section">' +
           '<div class="author-scholar-id-row">' +
-            '<input id="author-scholar-id-input" type="text" placeholder="e.g. nFTM_YIAAAAJ" />' +
+            '<input id="author-scholar-id-input" type="text" placeholder="e.g. 2w2RgPkAAAAJ (id is listed in the URL on your scholar profile as user=id" />' +
             '<button id="author-scholar-go-btn">Go</button>' +
           '</div>' +
           '<div id="author-scholar-status"></div>' +
