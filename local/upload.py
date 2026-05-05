@@ -4,7 +4,7 @@ import requests
 
 if len(sys.argv) < 3:
 	print('Usage: python upload.py <file_path> <app_url>')
-	print('Example: python upload.py data/phd_isr_res_filtered.json https://your-app.herokuapp.com')
+	print('Example: python upload.py data/phd_isr_res_filtered.json https://your-app.up.railway.app')
 	sys.exit(1)
 
 file_path = sys.argv[1]
@@ -19,15 +19,18 @@ if not os.path.exists(file_path):
 	print(f'File not found: {file_path}')
 	sys.exit(1)
 
-dest = '/app/data/phd_isr_res_filtered.json'
-with open(file_path, 'rb') as src:
-	with open(dest, 'wb') as dst:
-		dst.write(src.read())
-print(f'Copied to {dest}')
+size_mb = os.path.getsize(file_path) / (1024 * 1024)
+print(f'Uploading {file_path} ({size_mb:.1f} MB) to {app_url} ...')
 
-response = requests.post(
-	f'{app_url}/api/admin/reload',
-	headers={'x-admin-key': admin_key},
-	timeout=30,
-)
-print(f'Reload response ({response.status_code}): {response.json()}')
+with open(file_path, 'rb') as f:
+	response = requests.post(
+		f'{app_url}/api/admin/upload-results',
+		headers={
+			'x-admin-key': admin_key,
+			'content-type': 'application/json',
+		},
+		data=f,
+		timeout=600,
+	)
+
+print(f'Response ({response.status_code}): {response.json()}')
