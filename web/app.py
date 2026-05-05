@@ -3,7 +3,8 @@ import os
 from contextlib import asynccontextmanager
 from datetime import datetime
 
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, Header, HTTPException, Request
+
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -95,6 +96,25 @@ def admin_reload(x_admin_key: str = Header(...)):
         raise HTTPException(status_code=403, detail='Invalid admin key')
     author_count = load_results_into_state(app)
     return {'reloaded': True, 'authors_loaded': author_count}
+
+
+@app.post('/api/admin/upload-results')
+async def admin_upload_results(request: Request, x_admin_key: str = Header(...)):
+    """Replace the precomputed results JSON with the uploaded body, then reload state."""
+    admin_key = os.environ.get('ADMIN_KEY', '')
+    if not admin_key or x_admin_key != admin_key:
+        raise HTTPException(status_code=403, detail='Invalid admin key')
+
+    tmp_path = RESULTS_JSON_PATH + '.tmp'
+    bytes_written = 0
+    with open(tmp_path, 'wb') as f:
+        async for chunk in request.stream():
+            f.write(chunk)
+            bytes_written += len(chunk)
+
+    os.replace(tmp_path, RESULTS_JSON_PATH)
+    author_count = load_results_into_state(app)
+    return {'uploaded': True, 'bytes': bytes_written, 'authors_loaded': author_count}
 
 
 @app.get('/api/admin/scholar-results')
