@@ -4,6 +4,7 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 
 from fastapi import FastAPI, Header, HTTPException, Request
+from fastapi.responses import FileResponse
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -140,6 +141,21 @@ def admin_visit_count(x_admin_key: str = Header(...)):
     if not admin_key or x_admin_key != admin_key:
         raise HTTPException(status_code=403, detail='Invalid admin key')
     return {'visit_count': get_visit_count()}
+
+
+@app.get('/api/admin/download-results')
+def admin_download_results(x_admin_key: str = Header(...)):
+    """Download the precomputed results JSON file as an attachment."""
+    admin_key = os.environ.get('ADMIN_KEY', '')
+    if not admin_key or x_admin_key != admin_key:
+        raise HTTPException(status_code=403, detail='Invalid admin key')
+    if not os.path.exists(RESULTS_JSON_PATH):
+        raise HTTPException(status_code=404, detail='Results file not found')
+    return FileResponse(
+        path=RESULTS_JSON_PATH,
+        media_type='application/json',
+        filename='phd_isr_res_filtered.json',
+    )
 
 
 app.mount('/', StaticFiles(directory=STATIC_DIR, html=True), name='static')
